@@ -22,7 +22,9 @@ public class Request
         this.out = new PrintWriter(this.socket.getOutputStream(), true);
         this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
     }
+    /** Return the BufferedReader attached to Request socket */
     public BufferedReader getBufferedReader() { return this.in; }
+    /** Method for sending the GET request */
     public void sendGET()
     {
         out.println("GET " + this.url.getPath() + " HTTP/1.1");
@@ -31,7 +33,7 @@ public class Request
         out.println("");
         out.flush();
     }
-
+    /** Method for closing the socket and its buffers */
     public void close() throws Exception
     {
         this.out.close();

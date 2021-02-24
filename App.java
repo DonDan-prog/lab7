@@ -2,19 +2,30 @@ public class App
 {
     public static void main(String[] args) 
     {
-        ErrorLogger.init("error.txt");
-
+        /** Whenether the input, first init the error logger */
+        final String errorLogName = "error.txt";
+        ErrorLogger.init(errorLogName);
+        /** Check if we specify equal or more than 2 arguments; if less - that's the wrong usage */
         if(args.length > 1)
         {
             if(args.length == 3) WorkLogger.init(args[2]);
             else WorkLogger.init("log.txt");
 
-            WebCrawler crawler = new WebCrawler(args[0], Integer.parseInt(args[1]));
-            crawler.crawlSite();
+            try 
+            {
+                WebCrawler crawler = new WebCrawler(args[0], Integer.parseInt(args[1]));
+                crawler.crawlSite();
 
-            for(URLPair i : crawler.getVisited())
-                System.out.println(i);
-            
+                for(URLPair i : crawler.getVisited())
+                    System.out.println(i);
+            } 
+            catch (Exception e)
+            {
+                ErrorLogger.log(e.toString());
+                System.out.println("Probably You mistyped the input. Check the " + errorLogName + " for more information");
+                System.out.println("Usage: java App.java <full url> <maxDepth> [log name]");
+            }
+
             WorkLogger.close();
         }
         else

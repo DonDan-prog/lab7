@@ -3,16 +3,17 @@ import java.util.ArrayDeque;
 
 public class HtmlParser 
 {
+    /** Constant prefixes */
     private final String APREFIX = "<a";
     private final String HREFPREFIX = "href=\"";
     /** The queue of crawler */
     private ArrayDeque<URLPair> queue;
-
+    /** Simple - keep the link of queue in parser field */
     HtmlParser(ArrayDeque<URLPair> queue)
     {
         this.queue = queue;
     }
-
+    /** Perfoming parse on the fly of inputted data */
     public void parse(BufferedReader in, URLPair urlPair, int depth) throws Exception
     {
         String line = "";

@@ -1,11 +1,16 @@
 import java.io.FileWriter;
 
-public class WorkLogger 
+/** The logger to write the url's that was visited */
+public class WorkLogger
 {
+    /** Log file descriptor */
     private static FileWriter log = null;
-
+    /** The flag to keep track is logger initialized
+     *  Because if not, we do not perfom any operations with file
+     */
     private static boolean isCreated = false;
 
+    /** Initialize with given name */
     static void init(String logName) 
     {
         try 
@@ -18,7 +23,7 @@ public class WorkLogger
             isCreated = false;
         }
     }
-
+    /** Log the given string */
     public static void log(String toWrite) 
     {
         if (isCreated == false)
@@ -34,7 +39,7 @@ public class WorkLogger
             ErrorLogger.log("WorkLogger::write: " + e);
         }
     }
-
+    /** Close the file */
     public static void close()
     {
         if(isCreated == false) return;

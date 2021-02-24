@@ -50,7 +50,9 @@ public class URLPair
         parseUrl(urlBuilder);
         this.depth = depth;
     }
-    /** Hidden method for parse url */
+    /** Hidden method for parse url 
+     *  Complicated one
+    */
     private void parseUrl(StringBuilder url) throws Exception
     {
         /** Get protocol */

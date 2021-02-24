@@ -4,10 +4,12 @@ import java.util.Date;
 
 public class ErrorLogger 
 {
+    /** Descripto of log file */
     private static FileWriter log = null;
+    /** This is the formatter for data */
     private static SimpleDateFormat formatter = new SimpleDateFormat("[yyy-MM-dd 'at' HH:mm::ss] ");
-
-    static void init(String logName) 
+    /** Init the file with name */
+    public static void init(String logName) 
     {
         try 
         {
@@ -18,7 +20,7 @@ public class ErrorLogger
             log = null;
         }
     }
-
+    /** The method for logging the given string with line separator */
     public static void log(String toWrite) 
     {
         if(log == null) return;
@@ -31,7 +33,7 @@ public class ErrorLogger
         } 
         catch (Exception e) {}
     }
-
+    /** The method to close the file */
     public static void close()
     {
         if(log == null) return;
