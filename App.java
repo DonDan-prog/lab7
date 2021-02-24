@@ -4,15 +4,24 @@ public class App
     {
         ErrorLogger.init("error.txt");
 
-        String input = "http://bio.acousti.ca/";
+        if(args.length > 1)
+        {
+            if(args.length == 3) WorkLogger.init(args[2]);
+            else WorkLogger.init("log.txt");
 
-        WorkLogger.init("log.txt");
-        WebCrawler crawler = new WebCrawler(input, 2);
-        crawler.crawlSite();
-        for(URLPair i : crawler.getVisited())
-           System.out.println(i);
+            WebCrawler crawler = new WebCrawler(args[0], Integer.parseInt(args[1]));
+            crawler.crawlSite();
 
-        WorkLogger.close();
+            for(URLPair i : crawler.getVisited())
+                System.out.println(i);
+            
+            WorkLogger.close();
+        }
+        else
+        {
+            ErrorLogger.log("Error in launcging program: didn't use command args");
+            System.out.println("Usage: java App.java <full url> <maxDepth> [log name]");
+        }
         ErrorLogger.close();
     }
 }

@@ -4,20 +4,24 @@ import java.util.ArrayDeque;
 
 public class WebCrawler 
 {
+    /** Queue of remaining sites to crawl */
     private ArrayDeque<URLPair> queue;
+    /** The map of visited; used Map instead of Set because I'll port this program into multithread */
     private HashMap<URLPair, Integer> map;
-
+    /** Single parser for current WebCrawler */
     private HtmlParser parser;
-
+    /** The specified start url pair */
     private URLPair urlStart;
+    /** The specified maxDepth */
     private int maxDepth;
-
+    /** Is the crawler was created */
     private boolean isCreated;
-
-    private long startTime;
 
     WebCrawler(String urlString, int maxDepth)
     {
+        /** We try to initilaze all the class variables;
+         *  If something failed, we null everything and set the isCreated to false
+         */
         try 
         {
             this.urlStart = new URLPair(urlString, 0);
@@ -43,21 +47,22 @@ public class WebCrawler
             ErrorLogger.log("WebCrawler::WebCrawler: " + e);
         }
     }
-
+    /** Method for crawl the whole site */
     public void crawlSite()
     {
+        /** If not created just return */
         if(this.isCreated == false) return;
-
+        /** Init the logger */
         WorkLogger.log("WebCrawler start at site " + this.urlStart.getFullUrl() + " and maxDepth = " + this.maxDepth);
         WorkLogger.log("====== START ======");
         WorkLogger.log("");
-
-        this.startTime = System.currentTimeMillis();
+        /** Save the start time of crawling */
+        long startTime = System.currentTimeMillis();
+        /** Add the first page to crawl - it's the start url itself */
         this.queue.add(this.urlStart);
         for(int i = 0; i < this.maxDepth && this.queue.size() > 0; i++)
         {
             WorkLogger.log("===== DEPTH " + i + " ======");
-            WorkLogger.log("");
 
             int remainLen = this.queue.size();
             for(int j = 0; j < remainLen; j++)
@@ -67,7 +72,7 @@ public class WebCrawler
         }
 
         WorkLogger.log("====== END ======");
-        WorkLogger.log("Time elapsed: " + (System.currentTimeMillis() - this.startTime)/100.);
+        WorkLogger.log("Time elapsed: " + (System.currentTimeMillis() - startTime)/100.);
         WorkLogger.log("Total visited sites: " + this.map.size());
 
     }
