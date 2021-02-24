@@ -2,29 +2,17 @@ public class App
 {
     public static void main(String[] args) 
     {
-        String input = "http://www.google.com/";
-        try
-        {
-            URLPair url = new URLPair(input, 0);
+        ErrorLogger.init("error.txt");
 
-            Request request = new Request(url);
-            request.sendGET("/");
-            HTTPResponce responce = new HTTPResponce(request.getBufferedReader());
+        String input = "http://bio.acousti.ca/";
 
-            int statusCode = responce.getStatusCode();
-            switch (statusCode)
-            {
-                case 200:
-                    System.out.println("Success get");
-                    break;
-                default:
-                    throw new Exception("main: status code " + statusCode);
-            }
-            request.close();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
-        }
+        WorkLogger.init("log.txt");
+        WebCrawler crawler = new WebCrawler(input, 2);
+        crawler.crawlSite();
+        for(URLPair i : crawler.getVisited())
+           System.out.println(i);
+
+        WorkLogger.close();
+        ErrorLogger.close();
     }
 }

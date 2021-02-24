@@ -30,11 +30,13 @@ public class URLPair
     /** The constructor for the pair of url and depth */
     URLPair(String url, final int depth) throws Exception
     {
-        if(url.startsWith("http://") == false)
+        /** Check for valid protocol */
+        if(url == null) throw new Exception("URLPair::URLPair: null url get");
+        if(url.startsWith("http") == false)
             throw new Exception("URLPair::URLPair: unknown protocol");
         else if(url.startsWith("https://") == true)
             throw new Exception("URLPair::URLPair: unsupported protocol");
-
+        /** Check for valid end of url */
         if(url.endsWith(".jpg"))
             throw new Exception("URLPair::URLPair: jpg file get");
         else if(url.endsWith(".png"))
@@ -43,9 +45,10 @@ public class URLPair
             throw new Exception("URLPair::URLPair: mp4 file get");
         else if(url.endsWith(".pdf"))
             throw new Exception("URLPair::URLPair: pdf file get");
-
+        /** Making StringBuilder out of String because it may be faster, idk */
         StringBuilder urlBuilder = new StringBuilder(url);
         parseUrl(urlBuilder);
+        this.depth = depth;
     }
     /** Hidden method for parse url */
     private void parseUrl(StringBuilder url) throws Exception
@@ -76,6 +79,8 @@ public class URLPair
             this.fullUrlString = this.protocolString + "://" + this.hostString + this.pathString;
             return;
         }
+        /** Find thing that anchor starts with #:, so we need to take care of not having troubles with it */
+        if(portEnd > hostEnd) portEnd = -1;
         /** It means that URL has host end separator and haven't port end */
         if(portEnd == -1)
         {
@@ -106,6 +111,7 @@ public class URLPair
         this.fullUrlString = this.protocolString + "://" + this.hostString + this.pathString + '?' + this.queryString;
     }
     /** Getters of URL fields */
+    public String getFullUrl() { return this.fullUrlString; }
     public String getProtocol() { return this.protocolString; }
     public String getHost() { return this.hostString; }
     public String getPath() { return this.pathString; }
@@ -117,7 +123,7 @@ public class URLPair
     /** Methods to work with Java collections and to print normally */
     public String toString()
     {
-        return String.format("[URL=%s, depth=%d", this.fullUrlString, this.depth);
+        return String.format("[URL=%s, depth=%d]", this.fullUrlString, this.depth);
     }
     public int hashCode()
     {

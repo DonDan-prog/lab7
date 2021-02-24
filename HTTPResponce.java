@@ -4,7 +4,7 @@ import java.util.HashMap;
 public final class HTTPResponce 
 {
     private int statusCode;
-    private HashMap<String, Object> values;
+    private HashMap<String, String> values;
 
     public HTTPResponce(BufferedReader in) throws Exception
     {
@@ -23,7 +23,7 @@ public final class HTTPResponce
         }
     }
     public int getStatusCode() { return this.statusCode; }
-    public Object getParameter(final String key)
+    public String getParameter(final String key)
     {
         return this.values.get(key);
     }

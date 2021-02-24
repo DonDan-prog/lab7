@@ -23,7 +23,7 @@ public class Request
         this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
     }
     public BufferedReader getBufferedReader() { return this.in; }
-    public void sendGET(String path)
+    public void sendGET()
     {
         out.println("GET " + this.url.getPath() + " HTTP/1.1");
         out.println("Host: " + this.url.getHost() + ':' + this.url.getPort());
