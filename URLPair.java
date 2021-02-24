@@ -123,14 +123,6 @@ public class URLPair
     public int getPort() { return this.port; }
 
     /** Methods to work with Java collections and to print normally */
-    public String toString()
-    {
-        return String.format("[URL=%s, depth=%d]", this.fullUrlString, this.depth);
-    }
-    public int hashCode()
-    {
-        return this.protocolString.hashCode();
-    }
     public boolean equals(Object obj)
     {
         if (this == obj)
@@ -141,5 +133,13 @@ public class URLPair
             return false;
         URLPair other = (URLPair)obj;
         return this.fullUrlString.equals(other.fullUrlString); 
+
+    }
+    public int hashCode() { return this.fullUrlString.hashCode(); }
+
+    /** The function speaks for itself */
+    public String toString()
+    {
+        return String.format("[URL=%s, depth=%d]", this.fullUrlString, this.depth);
     }
 }
