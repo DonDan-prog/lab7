@@ -1,6 +1,6 @@
 public class App
 {
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
         /** Whenether the input, first init the error logger */
         final String errorLogName = "error.txt";

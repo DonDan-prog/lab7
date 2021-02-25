@@ -1,15 +1,13 @@
-import java.util.HashMap;
-import java.util.Set;
-import java.util.ArrayDeque;
+import java.util.*;
 
 public class WebCrawler 
 {
     /** Queue of remaining sites to crawl */
-    private ArrayDeque<URLPair> queue;
+    private Deque<URLPair> queue;
     /** The map of visited; used Map instead of Set because I'll port this program into multithread */
-    private HashMap<URLPair, Integer> map;
+    private HashMap<URLPair, Integer> visitedMap;
     /** Single parser for current WebCrawler */
-    private HtmlParser parser;
+    private RegexHtmlParser parser;
     /** The specified start url pair */
     private URLPair urlStart;
     /** The specified maxDepth */
@@ -27,17 +25,17 @@ public class WebCrawler
             this.urlStart = new URLPair(urlString, 0);
             this.maxDepth = maxDepth;
 
-            this.queue = new ArrayDeque<URLPair>();
-            this.map = new HashMap<URLPair, Integer>();
+            this.queue = new LinkedList<URLPair>();
+            this.visitedMap = new HashMap<URLPair, Integer>();
 
-            this.parser = new HtmlParser(queue);
+            this.parser = new RegexHtmlParser(queue);
 
             this.isCreated = true;
         }
         catch (Exception e) 
         {
             this.queue = null;
-            this.map = null;
+            this.visitedMap = null;
             this.parser = null;
             this.urlStart = null;
             this.maxDepth = 0;
@@ -73,24 +71,24 @@ public class WebCrawler
         }
         /** End the log file and add the time elapsed and total sites visited */
         WorkLogger.log("====== END ======");
-        WorkLogger.log("Time elapsed: " + (System.currentTimeMillis() - startTime)/100.);
-        WorkLogger.log("Total visited sites: " + this.map.size());
+        WorkLogger.log("Time elapsed: " + (System.currentTimeMillis() - startTime)/1000.);
+        WorkLogger.log("Total visited sites: " + this.visitedMap.size());
 
     }
     /** Method that returns the set of sites to print them all in console */
-    public Set<URLPair> getVisited() { return map.keySet(); }
+    public Set<URLPair> getVisited() { return visitedMap.keySet(); }
     /** The method to crawl the one page */
     private void crawlOne(int currentDepth)
     {
         try 
         {
             /** Extract the crawling page from the queue */
-            URLPair urlPair = queue.pop();
+            URLPair urlPair = queue.poll();
             /** Check if this site already visited */
-            if(map.containsKey(urlPair) == true) 
+            if(visitedMap.containsKey(urlPair) == true) 
                 throw new Exception("already visited");
             /** If not - add to visited */
-            map.put(urlPair, 0);
+            visitedMap.put(urlPair, 0);
             /** Add to log that site is visiting */
             WorkLogger.log(urlPair.toString());
             /** Make new request */
